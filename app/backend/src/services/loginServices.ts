@@ -3,6 +3,7 @@ import Joi = require('joi');
 import jwt = require('jsonwebtoken');
 // import * as bcrypt from 'bcryptjs';
 import BadRequest from '../errors/badRequest';
+import NotAuthorized from '../errors/notAuthorized';
 import Users from '../database/models/Users';
 import ILogin from '../interfaces/ILogin';
 
@@ -26,6 +27,6 @@ export default class LoginService {
       const token = jwt.sign(body.email, secret);
       return token;
     }
-    throw new Error('user not found');
+    throw new NotAuthorized('Incorrect email or password');
   }
 }
