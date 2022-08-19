@@ -4,6 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import Users from '../database/models/Users';
 import IToken from '../interfaces/IToken';
+import jwt from 'jsonwebtoken'; 
 
 import { app } from '../app';
 import Example from '../database/models/ExampleModel';
@@ -13,6 +14,7 @@ import { Response } from 'superagent';
 chai.use(chaiHttp);
 
 const { expect } = chai;
+
 const tokenMock: IToken = {
   token: "qualquerCoisa",
 }
@@ -25,6 +27,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
     beforeEach(() => {
       sinon.stub(Users, "findOne").resolves({} as Users);
+      sinon.stub(jwt, "sign").resolves(tokenMock)
     })
 
     afterEach(() => {
@@ -36,8 +39,11 @@ describe('Testes do projeto Trybe-futebol-club', () => {
         .post('/login')
         .send(login);
 
+        const token = response.body; 
+        
         expect(response.body).to.haveOwnProperty("token");
-        expect(response.status).to.equal(200)
+        expect(token).to.equal(tokenMock);
+        expect(response.status).to.equal(200);
     });
   })
 });
