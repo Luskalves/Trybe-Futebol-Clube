@@ -31,12 +31,13 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       sinon.restore();
     })
   
-    it('Testa se p usuário faz login corretamente e retorna um token', async () => {
+    it('Testa se o usuário faz login corretamente e retorna um token', async () => {
       const response = await chai.request(app)
         .post('/login')
         .send(login);
 
-        expect(response.body).to.equal(tokenMock)
+        expect(response.body).to.haveOwnProperty("token");
+        expect(response.status).to.equal(200)
     });
   })
 });

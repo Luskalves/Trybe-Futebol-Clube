@@ -5,6 +5,6 @@ export default class LoginController {
   static async post(req: Request, res: Response) {
     const token = await LoginService.find(req.body);
 
-    res.json({ token });
+    res.status(200).json({ token });
   }
 }

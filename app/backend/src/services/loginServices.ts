@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import Joi = require('joi');
-import * as bcrypt from 'bcryptjs';
 import jwt = require('jsonwebtoken');
 import Users from '../database/models/Users';
 import ILogin from '../interfaces/ILogin';
@@ -16,16 +15,15 @@ export default class LoginService {
   static async find(body: ILogin) {
     const { error } = schema.validate(body);
 
-    if (error) throw new Error();
-
-    const passwordHash = await bcrypt.hash(body.password, 10)
-      .then((hash) => hash);
-    Users.findOne({ where: {
+    if (error) throw new Error(error.message);
+    const user = await Users.findOne({ where: {
       email: body.email,
-      password: passwordHash,
     } });
 
-    const token = jwt.sign(body.email, secret);
-    return token;
+    if (user?.id !== undefined) {
+      const token = jwt.sign(body.email, secret);
+      return token;
+    }
+    throw new Error('user not found');
   }
 }
