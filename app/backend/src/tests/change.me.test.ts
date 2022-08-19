@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import Users from '../database/models/Users';
 import IToken from '../interfaces/IToken';
-import jwt from 'jsonwebtoken'; 
+import * as JWT from 'jsonwebtoken';
 
 import { app } from '../app';
 import Example from '../database/models/ExampleModel';
@@ -26,8 +26,9 @@ const login = {
 describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
     beforeEach(() => {
+      sinon.restore();
       sinon.stub(Users, "findOne").resolves({} as Users);
-      sinon.stub(jwt, "sign").resolves(tokenMock)
+      sinon.stub(JWT, "sign").resolves(tokenMock);
     })
 
     afterEach(() => {
@@ -35,6 +36,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
     })
   
     it('Testa se o usuário faz login corretamente e retorna um token', async () => {
+      
       const response = await chai.request(app)
         .post('/login')
         .send(login);

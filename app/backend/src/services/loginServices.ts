@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import Joi = require('joi');
 import jwt = require('jsonwebtoken');
+// import * as bcrypt from 'bcryptjs';
 import BadRequest from '../errors/badRequest';
 import Users from '../database/models/Users';
 import ILogin from '../interfaces/ILogin';
@@ -15,7 +16,8 @@ const schema = Joi.object({
 export default class LoginService {
   static async find(body: ILogin) {
     const { error } = schema.validate(body);
-    if (error) throw new BadRequest(error.message);
+    if (error) throw new BadRequest('All fields must be filled');
+
     const user = await Users.findOne({ where: {
       email: body.email,
     } });

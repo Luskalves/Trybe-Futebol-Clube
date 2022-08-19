@@ -62,6 +62,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "2.3.3",
+    "rescue": "^6.0.4",
     "sequelize": "6.9.0"
   }
 }
