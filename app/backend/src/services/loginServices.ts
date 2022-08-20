@@ -10,14 +10,12 @@ import ILogin from '../interfaces/ILogin';
 const secret = String(process.env.JWT_SECRET);
 
 export const schema = Joi.object({
-  email: Joi.string().required(),
+  email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
 });
 
 export default class LoginService {
   static async find(body: ILogin) {
-    if (!body.email || !body.password) throw new BadRequest('All fields must be filled');
-
     const { error } = schema.validate(body);
     if (error) throw new BadRequest('All fields must be filled');
 
