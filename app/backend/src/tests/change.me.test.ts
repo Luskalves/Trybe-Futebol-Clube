@@ -31,7 +31,6 @@ const userMock = {
 describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
     beforeEach(() => {
-      sinon.restore();
       sinon.stub(Users, "findOne").resolves(userMock as Users);
       sinon.stub(schema, "validate").resolves();
       sinon.stub(JWT, "sign").resolves(tokenMock);
