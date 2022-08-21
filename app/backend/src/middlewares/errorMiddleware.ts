@@ -13,6 +13,7 @@ const errorMiddleware: ErrorRequestHandler = (
     case 'notAuthorized':
       return res.status(401).json({ message });
     default:
+      return res.status(500).json({ message });
   }
 };
 
