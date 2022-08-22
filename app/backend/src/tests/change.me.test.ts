@@ -6,6 +6,7 @@ import chaiHttp = require('chai-http');
 import Users from '../database/models/Users';
 import Teams from '../database/models/Teams';
 import IToken from '../interfaces/IToken';
+import ITeams from '../interfaces/ITeams';
 import { schema } from '../services/loginServices';
 
 import { app } from '../app';
@@ -27,10 +28,10 @@ const userMock = {
   id: 1
 }
 
-const allTeamsMock = [{
+const teamsMock = {
   id: 1,
-  name: "name"
-}];
+  teamName: "name"
+};
 
 describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
@@ -60,18 +61,26 @@ describe('Testes do projeto Trybe-futebol-club', () => {
 
   describe('rota de teams', () => {
     beforeEach(() => {
-      // sinon.stub(Teams, "findAll").resolves([{}] as Teams);
-    })
-
-    afterEach(() => {
       sinon.restore();
     })
 
     it('testando se retorna uma lista de times', async () => {
+      sinon.stub(Teams, "findAll").resolves([teamsMock] as any);
       const response = await chai.request(app) 
         .get('/teams');
 
-      expect(response.body).to.deep.equal([{}])
+      expect(response.body).to.deep.equal(teamsMock)
+    });
+
+    it('testando se retorna um time específico pelo id', async () => {
+      sinon.stub(Teams, "findOne").resolves(teamsMock as any);
+      const response = await chai.request(app)
+        .get('/teams/:id')
+        .query({ id: 1});
+
+      console.log('corpo: ', response.body)
+
+      expect(response.body).to.deep.equal(teamsMock);
     })
   })
 });
