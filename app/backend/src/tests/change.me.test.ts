@@ -27,6 +27,11 @@ const userMock = {
   id: 1
 }
 
+const allTeamsMock = [{
+  id: 1,
+  name: "name"
+}];
+
 describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
     beforeEach(() => {
@@ -55,7 +60,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
 
   describe('rota de teams', () => {
     beforeEach(() => {
-      // sinon.stub(Teams, "findAll").resolves([{}] as Teams);
+      sinon.stub(Teams, "findAll").resolves([{}] as Teams);
     })
 
     afterEach(() => {
