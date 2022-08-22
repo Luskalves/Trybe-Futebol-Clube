@@ -5,4 +5,13 @@ export default class TeamsService {
     const teams = await Teams.findAll();
     return teams;
   }
+
+  static async findOne(id: number) {
+    const team = await Teams.findOne({
+      where: {
+        id,
+      },
+    });
+    return team;
+  }
 }

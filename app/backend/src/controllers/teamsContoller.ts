@@ -11,4 +11,14 @@ export default class TeamsController {
       next(e);
     }
   }
+
+  static async findOne(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = Number(req.params.id);
+      const team = await TeamsService.findOne(id);
+      res.status(200).json(team);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
