@@ -60,7 +60,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
 
   describe('rota de teams', () => {
     beforeEach(() => {
-      sinon.stub(Teams, "findAll").resolves([{}] as Teams);
+      // sinon.stub(Teams, "findAll").resolves([{}] as Teams);
     })
 
     afterEach(() => {
