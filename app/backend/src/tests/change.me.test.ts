@@ -7,11 +7,12 @@ import Users from '../database/models/Users';
 import Teams from '../database/models/Teams';
 import IToken from '../interfaces/IToken';
 import ITeams from '../interfaces/ITeams';
-import { schema } from '../services/loginServices';
+import LoginService, { schema } from '../services/loginServices';
 
 import { app } from '../app';
 import BadRequest from '../errors/badRequest';
 import NotAuthorized from '../errors/notAuthorized';
+import { response } from 'express';
 
 chai.use(chaiHttp);
 
@@ -81,6 +82,17 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       expect(BadRequest).to.throw()
       expect(response.body).to.be.deep.equal(errorMessage)
       expect(response.status).to.equal(400);
+    })
+
+    it('Testando um erro desconhecido', async () => {
+      sinon.stub(LoginService, "find").throws(new Error('someError'));
+
+      const response = await chai.request(app)
+        .post('/login');
+      
+        const errorMessage = { message: 'someError' }
+
+      expect(response.body).to.be.deep.equal(errorMessage)
     })
 
     it('Testa se os dados enviados são válidos',   async () => {
