@@ -1,5 +1,5 @@
+import 'express-async-errors';
 import { Router } from 'express';
-
 import LoginController from '../controllers/loginController';
 
 const loginRoute = Router();
