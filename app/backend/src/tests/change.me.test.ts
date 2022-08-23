@@ -6,13 +6,13 @@ import chaiHttp = require('chai-http');
 import Users from '../database/models/Users';
 import Teams from '../database/models/Teams';
 import IToken from '../interfaces/IToken';
-import ITeams from '../interfaces/ITeams';
+// import ITeams from '../interfaces/ITeams';
 import LoginService, { schema } from '../services/loginServices';
 
 import { app } from '../app';
 import BadRequest from '../errors/badRequest';
 import NotAuthorized from '../errors/notAuthorized';
-import { response } from 'express';
+// import { response } from 'express';
 
 chai.use(chaiHttp);
 
@@ -30,8 +30,6 @@ const login = {
 const userMock = {
   id: 1
 }
-
-const undefinedUserMock = { id: undefined} ;
 
 const teamsMock = {
   id: 1,
@@ -133,34 +131,3 @@ describe('Testes do projeto Trybe-futebol-club', () => {
     })
   })
 });
-
-
-// import Example from '../database/models/ExampleModel';
-
-// import { Response } from 'superagent';
-
-/**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
