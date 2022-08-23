@@ -30,7 +30,7 @@ Matches.init({
 
   homeTeamGoals: {
     type: INTEGER,
-    field: 'home_teams_goals',
+    field: 'home_team_goals',
     allowNull: false,
   },
 
@@ -63,11 +63,11 @@ Matches.init({
 });
 
 Matches.belongsTo(Teams, {
-  foreignKey: 'homeTeam', as: 'home_team',
+  foreignKey: 'homeTeam', as: 'teamHome',
 });
 
 Matches.belongsTo(Teams, {
-  foreignKey: 'awayTeam', as: 'away_team',
+  foreignKey: 'awayTeam', as: 'teamAway',
 });
 
 export default Matches;
