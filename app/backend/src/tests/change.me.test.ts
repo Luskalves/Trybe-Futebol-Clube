@@ -10,6 +10,7 @@ import ITeams from '../interfaces/ITeams';
 import { schema } from '../services/loginServices';
 
 import { app } from '../app';
+import BadRequest from '../errors/badRequest';
 
 chai.use(chaiHttp);
 
@@ -33,20 +34,20 @@ const teamsMock = {
   teamName: "name"
 };
 
+const userRoleMock = {
+  role: 'some_role'
+}
+
 describe('Testes do projeto Trybe-futebol-club', () => {
   describe('rota de login', () => {
     beforeEach(() => {
-      sinon.stub(Users, "findOne").resolves(userMock as Users);
-      sinon.stub(schema, "validate").resolves();
-      sinon.stub(JWT, "sign").resolves(tokenMock);
-    })
-
-    afterEach(() => {
       sinon.restore();
     })
   
     it('Testa se o usuário faz login corretamente e retorna um token', async () => {
-      
+      sinon.stub(Users, "findOne").resolves(userMock as Users);
+      sinon.stub(schema, "validate").resolves();
+      sinon.stub(JWT, "sign").resolves(tokenMock);
       const response = await chai.request(app)
         .post('/login')
         .send(login);
@@ -57,6 +58,27 @@ describe('Testes do projeto Trybe-futebol-club', () => {
         expect(token).to.deep.equal(tokenMock);
         expect(response.status).to.equal(200);
     });
+
+    it('Testa se o tipo do usuário é retornado', async () => {
+      sinon.stub(Users, "findOne").resolves(userRoleMock as Users)
+      const response = await chai.request(app)
+        .get('/login/validate');
+
+      expect(response.status).to.equal(200)
+      expect(response.body).to.be.deep.equal(userRoleMock);
+    })
+
+    it('Testa se o login falha', async () => {
+      sinon.stub(Users, "findOne").rejects();
+      const response = await chai.request(app)
+        .post('/login');
+      
+      const errorMessage = { message: 'All fields must be filled' }
+
+      expect(BadRequest).to.throw()
+      expect(response.body).to.be.deep.equal(errorMessage)
+      expect(response.status).to.equal(400);
+    })
   })
 
   describe('rota de teams', () => {
@@ -69,7 +91,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       const response = await chai.request(app) 
         .get('/teams');
 
-      expect(response.body).to.deep.equal(teamsMock)
+      expect(response.body).to.deep.equal([teamsMock])
     });
 
     it('testando se retorna um time específico pelo id', async () => {
@@ -77,8 +99,6 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       const response = await chai.request(app)
         .get('/teams/:id')
         .query({ id: 1});
-
-      console.log('corpo: ', response.body)
 
       expect(response.body).to.deep.equal(teamsMock);
     })
