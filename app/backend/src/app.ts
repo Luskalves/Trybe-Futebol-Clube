@@ -2,7 +2,7 @@ import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
 import loginRoute from './routes/loginRoute';
 import teamsRoute from './routes/teamsRoute';
-import 'express-async-errors';
+import matchesRoute from './routes/matchesRoute';
 
 class App {
   public app: express.Express;
@@ -29,7 +29,7 @@ class App {
 
     this.app.use('/login', loginRoute);
     this.app.use('/teams', teamsRoute);
-
+    this.app.use('/matches', matchesRoute);
     this.app.use(errorMiddleware);
   }
 
