@@ -11,6 +11,7 @@ import { schema } from '../services/loginServices';
 
 import { app } from '../app';
 import BadRequest from '../errors/badRequest';
+import NotAuthorized from '../errors/notAuthorized';
 
 chai.use(chaiHttp);
 
@@ -28,6 +29,8 @@ const login = {
 const userMock = {
   id: 1
 }
+
+const undefinedUserMock = { id: undefined} ;
 
 const teamsMock = {
   id: 1,
@@ -68,7 +71,7 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       expect(response.body).to.be.deep.equal(userRoleMock);
     })
 
-    it('Testa se o login falha', async () => {
+    it('Testa se os campos de login existem ou estão preenchidos', async () => {
       sinon.stub(Users, "findOne").rejects();
       const response = await chai.request(app)
         .post('/login');
@@ -78,6 +81,20 @@ describe('Testes do projeto Trybe-futebol-club', () => {
       expect(BadRequest).to.throw()
       expect(response.body).to.be.deep.equal(errorMessage)
       expect(response.status).to.equal(400);
+    })
+
+    it('Testa se os dados enviados são válidos',   async () => {
+      sinon.stub(schema, "validate").resolves();
+      sinon.stub(Users, "findOne").resolves();
+
+      const response = await chai.request(app)
+        .post('/login');
+
+        const errorMessage = { message: 'Incorrect email or password' }
+
+      expect(NotAuthorized).to.throw();
+      expect(response.body).to.be.deep.equal(errorMessage);
+      expect(response.status).to.equal(401);
     })
   })
 
