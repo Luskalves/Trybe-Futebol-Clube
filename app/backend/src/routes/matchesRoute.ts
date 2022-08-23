@@ -6,5 +6,6 @@ const matchesRoute = Router();
 
 matchesRoute.get('/', MacthesController.get);
 matchesRoute.post('/', MacthesController.post);
+matchesRoute.post('/:id/finish', MacthesController.finish);
 
 export default matchesRoute;
