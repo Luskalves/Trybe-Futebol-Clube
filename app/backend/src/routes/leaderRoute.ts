@@ -6,6 +6,7 @@ const leaderRoute = Router();
 
 const leaderController = new LeaderController();
 
-leaderRoute.get('/home', (req: Request, res: Response) => leaderController.get(req, res));
+leaderRoute.get('/home', (req: Request, res: Response) => leaderController.getHome(req, res));
+leaderRoute.get('/away', (req: Request, res: Response) => leaderController.getAway(req, res));
 
 export default leaderRoute;
