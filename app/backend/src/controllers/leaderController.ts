@@ -7,8 +7,13 @@ export default class LeaderController {
     this.service = new LeaderService();
   }
 
-  public async get(_req: Request, res: Response) {
+  public async getHome(_req: Request, res: Response) {
     const boards = await this.service.getHome();
+    res.status(200).json(boards);
+  }
+
+  public async getAway(_req: Request, res: Response) {
+    const boards = await this.service.getAway();
     res.status(200).json(boards);
   }
 }
